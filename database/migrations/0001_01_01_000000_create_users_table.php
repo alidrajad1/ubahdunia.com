@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['donatur', 'relawan', 'penerima', 'admin'])->default('donatur');
+            $table->decimal('saldo', 12, 2)->default(0);
+            $table->integer('poin')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
