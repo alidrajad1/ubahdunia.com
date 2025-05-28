@@ -46,8 +46,6 @@ Repository: [github.com/alidrajad1/ubahdunia.com.git](https://github.com/alidraj
 
 ## ⚙️ Instalasi
 
-```bash
-
 # 1. Clone Repository
 echo "1. Cloning repository..."
 git clone https://github.com/alidrajad1/ubahdunia.com.git
