@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', 
+        'saldo',
+        'poin',
     ];
 
     /**
@@ -43,6 +46,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'saldo' => 'decimal:2', // Cast saldo to decimal
+            'poin' => 'integer', // Cast poin to integer
         ];
     }
 }
