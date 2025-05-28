@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->enum('status', ['aktif', 'selesai', 'draft']);
             $table->string('slug')->unique();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
