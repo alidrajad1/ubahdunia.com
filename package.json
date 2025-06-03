@@ -12,21 +12,18 @@
         "@tailwindcss/typography": "^0.5.10",
         "@tailwindcss/vite": "^4.0.0",
         "@vitejs/plugin-vue": "^5.0.0",
-<<<<<<< HEAD
         "autoprefixer": "^10.4.21",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.5.4",
-=======
-        "autoprefixer": "^10.4.16",
-        "axios": "^1.8.2",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^1.2.0",
-        "postcss": "^8.4.32",
->>>>>>> 5b1d48c38f036e98f21cfaf918792502f4c80292
         "tailwindcss": "^3.4.0",
         "vite": "^6.2.4",
         "vue": "^3.3.13"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.7.2",
+        "@fortawesome/free-brands-svg-icons": "^6.7.2",
+        "@fortawesome/vue-fontawesome": "^3.0.8"
     }
 }
