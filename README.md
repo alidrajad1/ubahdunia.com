@@ -8,7 +8,7 @@ Repository: [github.com/alidrajad1/ubahdunia.com.git](https://github.com/alidraj
 
 ## ✨ Fitur Unggulan
 
-- 🔐 Registrasi & Login Akun (Laravel Breeze + Livewire)
+- 🔐 Registrasi & Login Akun (Jetstream & Inertia)
 - 💸 Donasi Uang, 📦 Barang, 🙋‍♂️ Tenaga Sukarela
 - 🔁 Top-up & Riwayat Transaksi
 - 📦 Pelacakan Status Donasi
