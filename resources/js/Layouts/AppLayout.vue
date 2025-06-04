@@ -13,7 +13,6 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
-// 1. Deklarasikan searchQuery
 const searchQuery = ref('');
 
 const switchToTeam = (team) => {
@@ -28,12 +27,9 @@ const logout = () => {
     router.post(route('logout'));
 };
 
-// 2. Deklarasikan fungsi performSearch
+
 const performSearch = () => {
-    // Lakukan sesuatu dengan searchQuery.value, misalnya:
     console.log('Mencari:', searchQuery.value);
-    // Contoh: redirect ke halaman pencarian
-    // router.get(route('search.results', { query: searchQuery.value }));
 };
 </script>
 
@@ -45,13 +41,13 @@ const performSearch = () => {
         <Banner />
 
         <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+            <nav class="sticky top-0 z-50 bg-white border-b border-gray-100">
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
+                    <div class="flex justify-between h-auto">
                         <div class="flex">
                             <div class="flex items-center shrink-0">
                                 <Link :href="route('dashboard')">
-                                <ApplicationMark class="block w-auto h-9" />
+                                <ApplicationMark class="block w-auto h-12" />
                                 </Link>
                             </div>
 
@@ -59,24 +55,27 @@ const performSearch = () => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('dashboard')">
+                                <NavLink :href="route('available-donation')"
+                                    :active="route().current('available-donation')">
                                     Donasi Tersedia
                                 </NavLink>
-                                <NavLink :href="route('dashboard')">
+                                <NavLink :href="route('news')" :active="route().current('news')">
                                     Berita
                                 </NavLink>
-                                <NavLink :href="route('dashboard')">
+                                <NavLink :href="route('volunteer')" :active="route().current('volunteer')">
                                     Volunteer
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div class="flex items-center ms-auto">
+                        <!-- Bagian ini akan disembunyikan di layar kecil (mobile) -->
+                        <!-- Tambahkan kelas 'hidden' dan 'sm:flex' -->
+                        <div class="items-center hidden ms-auto sm:flex">
                             <form @submit.prevent="performSearch" class="relative hidden w-96 sm:block">
                                 <input type="text" v-model="searchQuery" placeholder="Cari..."
-                                    class="block w-full pr-10 border-gray-300 rounded-full shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                    class="block w-full pr-10 border-gray-300 rounded-full shadow-sm focus:border-[#3198E8] focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <button type="submit"
-                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700">
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-[#3198E8]">
                                     <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -86,13 +85,13 @@ const performSearch = () => {
                             </form>
 
                             <div class="relative ms-3">
-                                <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
+                                <Dropdown v-if="$page.props.jetstream.hasTeamFeatures && $page.props.auth.user"
+                                    align="right" width="60">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button"
                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
                                                 {{ $page.props.auth.user.current_team.name }}
-
                                                 <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg"
                                                     fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                                     stroke="currentColor">
@@ -154,50 +153,65 @@ const performSearch = () => {
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
-                                        <button v-if="$page.props.jetstream.managesProfilePhotos"
+                                        <button
+                                            v-if="$page.props.jetstream.managesProfilePhotos && $page.props.auth.user"
                                             class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
                                             <img class="object-cover rounded-full size-8"
                                                 :src="$page.props.auth.user.profile_photo_url"
                                                 :alt="$page.props.auth.user.name">
                                         </button>
 
-                                        <span v-else class="inline-flex rounded-md">
+                                        <span v-else-if="$page.props.auth.user" class="inline-flex rounded-md">
                                             <button type="button"
                                                 class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
                                                 <div class="flex items-center">
+                                                    <!-- Perbaikan: Tambahkan text-right di sini -->
+                                                    <div class="flex-col px-5 text-right">
+                                                        <div class="text-base font-medium text-gray-800">
+                                                            {{ $page.props.auth.user.name }}
+                                                        </div>
+                                                        <div class="text-sm font-light text-gray-400">
+                                                            {{ $page.props.auth.user.email }}
+                                                        </div>
+                                                    </div>
                                                     <img v-if="$page.props.auth.user.profile_photo_url"
-                                                        class="object-cover rounded-full size-8 me-2"
+                                                        class="object-cover rounded-full size-10 me-3"
                                                         :src="$page.props.auth.user.profile_photo_url"
                                                         :alt="$page.props.auth.user.name">
-                                                    {{ $page.props.auth.user.name }}
                                                 </div>
-                                                <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                                    stroke="currentColor">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="#3198E8" class="size-9">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                                                 </svg>
+
+
                                             </button>
                                         </span>
+                                        <Link v-else :href="route('login')"
+                                            class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50">
+                                        Login
+                                        </Link>
                                     </template>
 
                                     <template #content>
-                                        <div class="block px-4 py-2 text-xs text-gray-400">
+                                        <div v-if="$page.props.auth.user" class="block px-4 py-2 text-xs text-gray-400">
                                             Manage Account
                                         </div>
 
-                                        <DropdownLink :href="route('profile.show')">
+                                        <DropdownLink v-if="$page.props.auth.user" :href="route('profile.show')">
                                             Profile
                                         </DropdownLink>
 
-                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures"
+                                        <DropdownLink
+                                            v-if="$page.props.jetstream.hasApiFeatures && $page.props.auth.user"
                                             :href="route('api-tokens.index')">
                                             API Tokens
                                         </DropdownLink>
 
-                                        <div class="border-t border-gray-200" />
+                                        <div v-if="$page.props.auth.user" class="border-t border-gray-200" />
 
-                                        <form @submit.prevent="logout">
+                                        <form v-if="$page.props.auth.user" @submit.prevent="logout">
                                             <DropdownLink as="button">
                                                 Log Out
                                             </DropdownLink>
@@ -207,6 +221,7 @@ const performSearch = () => {
                             </div>
                         </div>
 
+                        <!-- Tombol toggle menu mobile -->
                         <div class="flex items-center -me-2 sm:hidden">
                             <button
                                 class="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
@@ -226,19 +241,21 @@ const performSearch = () => {
                     </div>
                 </div>
 
+                <!-- Responsive Navigation Menu (Mobile) -->
                 <div :class="{ 'block': showingNavigationDropdown, 'hidden': !showingNavigationDropdown }"
                     class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('available-donation')"
+                            :active="route().current('available-donation')">
                             Donasi Tersedia
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('news')" :active="route().current('news')">
                             Berita
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <ResponsiveNavLink :href="route('volunteer')" :active="route().current('volunteer')">
                             Volunteer
                         </ResponsiveNavLink>
                     </div>
@@ -247,13 +264,13 @@ const performSearch = () => {
                             <input type="text" v-model="searchQuery" placeholder="Cari..."
                                 class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <button type="submit"
-                                class="inline-flex items-center justify-center w-full px-4 py-2 mt-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                class="inline-flex items-center justify-center w-full px-4 py-2 mt-2 text-sm font-medium text-white bg-[#3198E8] border border-transparent rounded-md hover:bg-[#56c7ff] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3198E8]">
                                 Cari
                             </button>
                         </form>
                     </div>
                     <div class="pt-4 pb-1 border-t border-gray-200">
-                        <div class="flex items-center px-4">
+                        <div v-if="$page.props.auth.user" class="flex items-center px-4">
                             <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 me-3">
                                 <img class="object-cover rounded-full size-10"
                                     :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">
@@ -273,26 +290,34 @@ const performSearch = () => {
                                 </div>
                             </div>
                         </div>
+                        <div v-else class="px-4">
+                            <Link :href="route('login')"
+                                class="block w-full px-4 py-2 text-base font-medium text-left text-gray-600 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:bg-gray-100 focus:text-gray-800">
+                            Login
+                            </Link>
+                        </div>
+
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">
+                            <ResponsiveNavLink v-if="$page.props.auth.user" :href="route('profile.show')"
+                                :active="route().current('profile.show')">
                                 Profile
                             </ResponsiveNavLink>
 
-                            <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures"
+                            <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures && $page.props.auth.user"
                                 :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">
                                 API Tokens
                             </ResponsiveNavLink>
 
-                            <div class="border-t border-gray-200" />
+                            <div v-if="$page.props.auth.user" class="border-t border-gray-200" />
 
-                            <form method="POST" @submit.prevent="logout">
+                            <form v-if="$page.props.auth.user" method="POST" @submit.prevent="logout">
                                 <ResponsiveNavLink as="button">
                                     Log Out
                                 </ResponsiveNavLink>
                             </form>
 
-                            <template v-if="$page.props.jetstream.hasTeamFeatures">
+                            <template v-if="$page.props.jetstream.hasTeamFeatures && $page.props.auth.user">
                                 <div class="border-t border-gray-200" />
 
                                 <div class="block px-4 py-2 text-xs text-gray-400">
@@ -352,7 +377,7 @@ const performSearch = () => {
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
                         <div>
-                            <h3 class="mb-4 text-lg font-semibold">Tentang Kami</h3>
+                            <h3 class="mb-4 text-lg font-semibold">UbahDunia.com</h3>
                             <p class="text-sm text-gray-400">Platform ini bertujuan untuk memfasilitasi donasi dan
                                 kegiatan
                                 sukarelawan, membantu menghubungkan orang-orang yang membutuhkan dengan mereka yang
@@ -367,17 +392,18 @@ const performSearch = () => {
                                     Dashboard</Link>
                                 </li>
                                 <li>
-                                    <Link :href="route('dashboard')" class="text-sm text-gray-400 hover:text-white">
+                                    <Link :href="route('available-donation')"
+                                        class="text-sm text-gray-400 hover:text-white">
                                     Donasi Tersedia
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link :href="route('dashboard')" class="text-sm text-gray-400 hover:text-white">
+                                    <Link :href="route('news')" class="text-sm text-gray-400 hover:text-white">
                                     Berita Terbaru
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link :href="route('dashboard')" class="text-sm text-gray-400 hover:text-white">
+                                    <Link :href="route('volunteer')" class="text-sm text-gray-400 hover:text-white">
                                     Bergabung
                                     Sebagai Volunteer</Link>
                                 </li>
