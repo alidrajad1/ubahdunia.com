@@ -53,4 +53,5 @@ git clone https://github.com/alidrajad1/ubahdunia.com.git
 cd ubahdunia.com
 composer install
 cp .env.example .env
+php artisan migrate
 php artisan key:generate
