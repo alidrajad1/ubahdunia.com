@@ -43,7 +43,7 @@ const performSearch = () => {
         <div class="min-h-screen bg-gray-100">
             <nav class="sticky top-0 z-50 bg-white border-b border-gray-100">
                 <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-auto">
+                    <div class="flex justify-between h-16">
                         <div class="flex">
                             <div class="flex items-center shrink-0">
                                 <Link :href="route('dashboard')">
