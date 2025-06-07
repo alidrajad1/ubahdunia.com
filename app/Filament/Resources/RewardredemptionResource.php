@@ -5,8 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\RewardredemptionResource\Pages;
 use App\Filament\Resources\RewardredemptionResource\RelationManagers;
 use App\Models\Rewardredemption;
-use App\Models\User;   // Import model User
-use App\Models\Reward; // Import model Reward
+use App\Models\User;
+use App\Models\Reward;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,13 +19,13 @@ class RewardredemptionResource extends Resource
 {
     protected static ?string $model = Rewardredemption::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-receipt-percent'; // Mengganti ikon menjadi receipt-percent
+    protected static ?string $navigationIcon = 'heroicon-o-receipt-percent';
 
-    protected static ?string $navigationGroup = 'User Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?string $modelLabel = 'Reward Redemption'; // Label untuk model
+    protected static ?string $modelLabel = 'Reward Redemption';
 
-    protected static ?string $pluralModelLabel = 'Reward Redemptions'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Reward Redemptions';
 
     public static function form(Form $form): Form
     {
@@ -33,21 +33,21 @@ class RewardredemptionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('User')
-                    ->relationship('user', 'name') // Mengambil nama dari tabel users
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('reward_id')
                     ->label('Reward')
-                    ->relationship('reward', 'name') // Mengambil nama dari tabel rewards
+                    ->relationship('reward', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 Forms\Components\DateTimePicker::make('redeemed_at')
                     ->label('Redeemed At')
-                    ->default(now()) // Default ke waktu saat ini
+                    ->default(now())
                     ->required(),
             ]);
     }
@@ -61,12 +61,12 @@ class RewardredemptionResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('user.name') // Menampilkan nama user dari relasi
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('User Name')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('reward.name') // Menampilkan nama reward dari relasi
+                Tables\Columns\TextColumn::make('reward.name')
                     ->label('Reward Name')
                     ->sortable()
                     ->searchable(),
@@ -135,7 +135,7 @@ class RewardredemptionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+           
         ];
     }
 

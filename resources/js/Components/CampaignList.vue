@@ -7,11 +7,10 @@ const campaigns = ref([]);
 const isLoading = ref(true);
 const error = ref(null);
 
-// BARU: Tambahkan prop hideViewAllLink
 const props = defineProps({
     hideViewAllLink: {
         type: Boolean,
-        default: false, // Secara default, link akan terlihat
+        default: false,
     },
 });
 
@@ -45,7 +44,7 @@ const formatCurrency = (amount) => {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
-        minimumFractionDigits: 0, // Tidak menampilkan desimal untuk rupiah
+        minimumFractionDigits: 0,
         maximumFractionDigits: 0,
     }).format(amount);
 };
@@ -53,12 +52,12 @@ const formatCurrency = (amount) => {
 
 <template>
     <div class="p-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
-        <!-- Pindahkan link "Lihat Semua" ke atas, di sebelah judul -->
+
         <div class="flex items-center justify-between mb-6">
             <h3 class="relative inline-block text-2xl font-bold gradient-underline-title">
                 Kampanye Donasi Aktif
             </h3>
-            <!-- BARU: Gunakan v-if untuk menyembunyikan link berdasarkan prop -->
+
             <Link v-if="!props.hideViewAllLink" :href="route('available-donation')" class="text-lg font-semibold text-gray-700 hover:text-gray-900 gradient-underline-link">
                 Lihat Semua Kampanye &rarr;
             </Link>
@@ -103,10 +102,10 @@ const formatCurrency = (amount) => {
 </template>
 
 <style scoped>
-/* CSS untuk underline gradient pada judul */
+
 .gradient-underline-title {
     position: relative;
-    padding-bottom: 5px; /* Jarak antara teks dan underline */
+    padding-bottom: 5px;
 }
 
 .gradient-underline-title::after {
@@ -115,17 +114,16 @@ const formatCurrency = (amount) => {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 3px; /* Ketebalan underline */
-    /* Rasio 1:9 untuk #90CFF1 dan #D38107 */
+    height: 3px;
     background-image: linear-gradient(to right, #90CFF1 10%, #D38107 10%);
-    border-radius: 9999px; /* Membuat ujung underline membulat */
+    border-radius: 9999px;
 }
 
-/* CSS untuk underline gradient pada link "Lihat Semua" */
+
 .gradient-underline-link {
     position: relative;
-    padding-bottom: 3px; /* Jarak antara teks dan underline */
-    text-decoration: none; /* Hapus underline default */
+    padding-bottom: 3px;
+    text-decoration: none;
 }
 
 .gradient-underline-link::after {
@@ -134,16 +132,15 @@ const formatCurrency = (amount) => {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 2px; /* Ketebalan underline */
-    /* Rasio 1:9 untuk #90CFF1 dan #D38107 */
+    height: 2px;
     background-image: linear-gradient(to right, #90CFF1 10%, #D38107 10%);
     border-radius: 9999px;
-    transform: scaleX(0); /* Awalnya tidak terlihat */
+    transform: scaleX(0);
     transform-origin: bottom left;
-    transition: transform 0.3s ease-out; /* Animasi saat hover */
+    transition: transform 0.3s ease-out;
 }
 
 .gradient-underline-link:hover::after {
-    transform: scaleX(1); /* Muncul saat hover */
+    transform: scaleX(1);  
 }
 </style>

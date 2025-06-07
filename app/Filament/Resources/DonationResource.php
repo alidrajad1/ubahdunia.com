@@ -5,8 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DonationResource\Pages;
 use App\Filament\Resources\DonationResource\RelationManagers;
 use App\Models\Donation;
-use App\Models\User; // Import model User
-use App\Models\Campaign; // Import model Campaign
+use App\Models\User;
+use App\Models\Campaign;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,13 +19,13 @@ class DonationResource extends Resource
 {
     protected static ?string $model = Donation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-heart'; // Mengganti ikon menjadi heart
+    protected static ?string $navigationIcon = 'heroicon-o-heart';
 
-    protected static ?string $navigationGroup = 'Financial Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Financial Management';
 
-    protected static ?string $modelLabel = 'Donation'; // Label untuk model
+    protected static ?string $modelLabel = 'Donation';
 
-    protected static ?string $pluralModelLabel = 'Donations'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Donations';
 
     public static function form(Form $form): Form
     {
@@ -33,14 +33,14 @@ class DonationResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Donor User')
-                    ->relationship('user', 'name') // Mengambil nama dari tabel users
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('campaign_id')
                     ->label('Campaign')
-                    ->relationship('campaign', 'title') // Mengambil judul dari tabel campaigns
+                    ->relationship('campaign', 'title')
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -53,22 +53,22 @@ class DonationResource extends Resource
                         'labor' => 'Labor',
                     ])
                     ->required()
-                    ->reactive(), // Membuat field ini reaktif untuk kondisi amount
+                    ->reactive(),
 
                 Forms\Components\TextInput::make('amount')
                     ->label('Amount')
                     ->numeric()
-                    ->prefix('Rp') // Menambahkan prefix mata uang
-                    ->required(fn (Forms\Get $get): bool => $get('type') === 'money') // Wajib jika tipe adalah 'money'
-                    ->nullable(fn (Forms\Get $get): bool => $get('type') !== 'money') // Nullable jika tipe bukan 'money'
+                    ->prefix('Rp')
+                    ->required(fn (Forms\Get $get): bool => $get('type') === 'money')
+                    ->nullable(fn (Forms\Get $get): bool => $get('type') !== 'money')
                     ->rule('numeric')
                     ->step(0.01)
-                    ->hidden(fn (Forms\Get $get): bool => $get('type') !== 'money'), // Sembunyikan jika tipe bukan 'money'
+                    ->hidden(fn (Forms\Get $get): bool => $get('type') !== 'money'),
 
                 Forms\Components\RichEditor::make('description')
                     ->label('Description')
-                    ->nullable() // Deskripsi bisa null
-                    ->columnSpanFull(), // Mengambil lebar penuh di form
+                    ->nullable()
+                    ->columnSpanFull(),
 
                 Forms\Components\Select::make('status')
                     ->label('Status')
@@ -78,7 +78,7 @@ class DonationResource extends Resource
                         'completed' => 'Completed',
                     ])
                     ->required()
-                    ->default('processed'), // Default status saat membuat donasi baru
+                    ->default('processed'),
             ]);
     }
 
@@ -91,12 +91,12 @@ class DonationResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('user.name') // Menampilkan nama user dari relasi
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('Donor')
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('campaign.title') // Menampilkan judul kampanye dari relasi
+                Tables\Columns\TextColumn::make('campaign.title')
                     ->label('Campaign')
                     ->sortable()
                     ->searchable(),
@@ -107,16 +107,16 @@ class DonationResource extends Resource
 
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
-                    ->money('IDR') // Menampilkan sebagai mata uang Rupiah
-                    ->default('-') // Tampilkan '-' jika amount null (untuk goods/labor)
+                    ->money('IDR')
+                    ->default('-')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('description')
                     ->label('Description')
-                    ->limit(50) // Batasi panjang teks
+                    ->limit(50)
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                Tables\Columns\BadgeColumn::make('status') // Menggunakan BadgeColumn untuk status
+                Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
                         'warning' => 'processed',
@@ -180,8 +180,7 @@ class DonationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Jika Anda memiliki CommentsRelationManager untuk donasi, Anda bisa menambahkannya di sini
-            // RelationManagers\CommentsRelationManager::class,
+             
         ];
     }
 

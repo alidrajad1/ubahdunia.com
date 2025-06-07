@@ -21,7 +21,7 @@ class Donation extends Model
     ];
 
     protected $casts = [
-        // 'amount' => 'decimal:2', // Anda bisa mengaktifkan ini jika ingin casting otomatis
+        'amount' => 'decimal:2',
     ];
 
     /**
@@ -32,19 +32,15 @@ class Donation extends Model
      */
     protected static function booted(): void
     {
-        // When a Donation is created, update the associated Campaign's collected_amount.
+
         static::created(function (Donation $donation) {
-            // Only update if the donation type is 'money' and has an amount.
-            // You might want to adjust this logic if 'goods' or 'labor' also contribute to collected_amount
-            // in a quantifiable way (e.g., estimated value).
+
             if ($donation->type === 'money' && $donation->amount > 0) {
-                $campaign = $donation->campaign; // Get the associated campaign
+                $campaign = $donation->campaign;
 
                 if ($campaign) {
                     $campaign->increment('collected_amount', $donation->amount);
-                    // You might also want to check if collected_amount exceeds target_amount
-                    // and update campaign status to 'finished' if it does.
-                    // For example:
+
                     if ($campaign->collected_amount >= $campaign->target_amount) {
                         $campaign->status = 'finished';
                         $campaign->save();
@@ -53,13 +49,13 @@ class Donation extends Model
             }
         });
 
-        // When a Donation is deleted, decrement the associated Campaign's collected_amount.
+
         static::deleted(function (Donation $donation) {
             if ($donation->type === 'money' && $donation->amount > 0) {
                 $campaign = $donation->campaign;
 
                 if ($campaign) {
-                    // Ensure collected_amount does not go below zero
+
                     $newCollectedAmount = $campaign->collected_amount - $donation->amount;
                     $campaign->collected_amount = max(0, $newCollectedAmount);
                     $campaign->save();
@@ -67,10 +63,7 @@ class Donation extends Model
             }
         });
 
-        // Optional: When a Donation is updated (e.g., amount changes), adjust collected_amount.
-        // This is more complex as you need to consider the old amount vs new amount.
-        // For simplicity, we'll focus on created and deleted for now.
-        // If you need this, let me know, and I can provide the logic.
+
     }
 
     /**

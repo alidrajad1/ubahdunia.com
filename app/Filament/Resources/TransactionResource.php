@@ -18,13 +18,13 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar'; // Mengganti ikon menjadi currency-dollar
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static ?string $navigationGroup = 'Financial Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Financial Management';
 
-    protected static ?string $modelLabel = 'Transaction'; // Label untuk model
+    protected static ?string $modelLabel = 'Transaction';
 
-    protected static ?string $pluralModelLabel = 'Transactions'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Transactions';
 
     public static function form(Form $form): Form
     {
@@ -32,7 +32,7 @@ class TransactionResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('User')
-                    ->relationship('user', 'name') // Mengambil nama dari tabel users
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -41,24 +41,24 @@ class TransactionResource extends Resource
                     ->label('Transaction Type')
                     ->options([
                         'topup' => 'Top Up',
-                        'donation' => 'Donation', // Diperbarui: 'donasi' menjadi 'donation'
+                        'donation' => 'Donation',
                     ])
                     ->required(),
 
                 Forms\Components\TextInput::make('amount')
                     ->label('Amount')
                     ->numeric()
-                    ->prefix('Rp') // Menambahkan prefix mata uang
+                    ->prefix('Rp')
                     ->required()
-                    ->rule('numeric') // Memastikan input adalah numerik
-                    ->step(0.01), // Memungkinkan nilai desimal
+                    ->rule('numeric')
+                    ->step(0.01),
 
                 Forms\Components\Select::make('status')
                     ->label('Status')
                     ->options([
                         'pending' => 'Pending',
-                        'success' => 'Success', // Diperbarui: 'berhasil' menjadi 'success'
-                        'failed' => 'Failed',   // Diperbarui: 'gagal' menjadi 'failed'
+                        'success' => 'Success',
+                        'failed' => 'Failed',
                     ])
                     ->required(),
             ]);
@@ -73,7 +73,7 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('user.name') // Menampilkan nama user dari relasi
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('User Name')
                     ->sortable()
                     ->searchable(),
@@ -85,15 +85,15 @@ class TransactionResource extends Resource
 
                 Tables\Columns\TextColumn::make('amount')
                     ->label('Amount')
-                    ->money('IDR') // Menampilkan sebagai mata uang Rupiah
+                    ->money('IDR')
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('status') // Menggunakan BadgeColumn untuk status
+                Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
                         'warning' => 'pending',
-                        'success' => 'success', // Diperbarui: 'berhasil' menjadi 'success'
-                        'danger' => 'failed',     // Diperbarui: 'gagal' menjadi 'failed'
+                        'success' => 'success',
+                        'danger' => 'failed',
                     ])
                     ->sortable(),
 
@@ -113,15 +113,15 @@ class TransactionResource extends Resource
                 Tables\Filters\SelectFilter::make('type')
                     ->options([
                         'topup' => 'Top Up',
-                        'donation' => 'Donation', // Diperbarui: 'donasi' menjadi 'donation'
+                        'donation' => 'Donation',
                     ])
                     ->label('Filter by Type'),
 
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'pending' => 'Pending',
-                        'success' => 'Success', // Diperbarui: 'berhasil' menjadi 'success'
-                        'failed' => 'Failed',   // Diperbarui: 'gagal' menjadi 'failed'
+                        'success' => 'Success',
+                        'failed' => 'Failed',    
                     ])
                     ->label('Filter by Status'),
             ])

@@ -12,7 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Hash; // Import Hash facade
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
@@ -117,12 +117,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\AdminsRelationManager::class,
-            // RelationManagers\DonationsRelationManager::class,
-            // RelationManagers\RequestsRelationManager::class,
-            // RelationManagers\TransactionsRelationManager::class,
-            // RelationManagers\RewardRedemptionsRelationManager::class,
-            // RelationManagers\CommentsRelationManager::class,
+            
         ];
     }
 

@@ -4,8 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RequestResource\Pages;
 use App\Filament\Resources\RequestResource\RelationManagers;
-use App\Models\Request; // Menggunakan model Request
-use App\Models\User;    // Import model User
+use App\Models\Request;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,13 +18,13 @@ class RequestResource extends Resource
 {
     protected static ?string $model = Request::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text'; // Mengganti ikon menjadi document-text
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?string $navigationGroup = 'Content Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Content Management';
 
-    protected static ?string $modelLabel = 'Request'; // Label untuk model
+    protected static ?string $modelLabel = 'Request';
 
-    protected static ?string $pluralModelLabel = 'Requests'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Requests';
 
     public static function form(Form $form): Form
     {
@@ -32,7 +32,7 @@ class RequestResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('User')
-                    ->relationship('user', 'name') // Mengambil nama dari tabel users
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -45,7 +45,7 @@ class RequestResource extends Resource
                 Forms\Components\RichEditor::make('description')
                     ->label('Description')
                     ->required()
-                    ->columnSpanFull(), // Mengambil lebar penuh di form
+                    ->columnSpanFull(),
 
                 Forms\Components\Select::make('status')
                     ->label('Status')
@@ -56,7 +56,7 @@ class RequestResource extends Resource
                         'approved' => 'Approved',
                     ])
                     ->required()
-                    ->default('pending'), // Default status saat membuat request baru
+                    ->default('pending'),
             ]);
     }
 
@@ -69,7 +69,7 @@ class RequestResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('user.name') // Menampilkan nama user dari relasi
+                Tables\Columns\TextColumn::make('user.name')
                     ->label('User Name')
                     ->sortable()
                     ->searchable(),
@@ -78,9 +78,9 @@ class RequestResource extends Resource
                     ->label('Title')
                     ->sortable()
                     ->searchable()
-                    ->limit(50), // Membatasi panjang teks yang ditampilkan
+                    ->limit(50),
 
-                Tables\Columns\BadgeColumn::make('status') // Menggunakan BadgeColumn untuk status
+                Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
                         'warning' => 'pending',
@@ -132,8 +132,7 @@ class RequestResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Jika Anda memiliki CommentsRelationManager untuk request, Anda bisa menambahkannya di sini
-            // RelationManagers\CommentsRelationManager::class,
+           
         ];
     }
 

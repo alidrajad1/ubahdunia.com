@@ -8,15 +8,15 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    donationHistory: { // Pastikan prop ini diterima
+    donationHistory: {
         type: Array,
         default: () => [],
     },
-    totalDonationCount: { // Pastikan prop ini diterima
+    totalDonationCount: {
         type: Number,
         default: 0,
     },
-    timelineEvents: { // Pastikan prop ini diterima
+    timelineEvents: {
         type: Array,
         default: () => [],
     },
@@ -47,11 +47,6 @@ const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('id-ID', options);
 };
 
-// Log data untuk debugging
-console.log('Donation detail:', props.campaign);
-console.log('Donation History:', props.donationHistory); // Pastikan ini menampilkan data sebenarnya
-console.log('Total Donation Count:', props.totalDonationCount);
-console.log('Timeline Events:', props.timelineEvents);
 </script>
 
 <template>
@@ -60,7 +55,7 @@ console.log('Timeline Events:', props.timelineEvents);
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="p-6 overflow-hidden bg-white shadow-xl sm:rounded-lg">
                     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-                        <!-- Kolom Kiri (Hero Image, Progress, Donasi Button) -->
+
                         <div class="lg:col-span-2">
                             <img :src="'/storage/' + campaign.image_url" :alt="campaign.title"
                                 class="object-cover w-full mb-6 rounded-lg shadow-md h-96">
@@ -82,15 +77,17 @@ console.log('Timeline Events:', props.timelineEvents);
                                     {{ getCollectedPercentage }}% dari {{ formatCurrency(campaign.target_amount) }}
                                 </div>
                             </div>
-
-                            <button class="w-full py-4 text-xl font-bold text-white transition duration-150 ease-in-out bg-[#3198E8] rounded-lg hover:bg-[#56c7ff]">
-                                Donasi
-                            </button>
+                            <div class="mt-4">
+                                <Link :href="route('donation.form', { slug: props.campaign.slug })"
+                                    class="block w-full px-4 py-3 text-lg font-bold text-center text-white transition duration-200 ease-in-out rounded-lg shadow-md bg-[#3198E8] hover:bg-blue-500">
+                                    Donasi
+                                </Link>
+                            </div>
                         </div>
 
-                        <!-- Kolom Kanan (Tentang Program, Report/Timeline) -->
+
                         <div class="lg:col-span-1">
-                            <!-- Tentang Program -->
+
                             <div class="p-6 mb-6 rounded-lg shadow-inner bg-gray-50">
                                 <h2 class="mb-4 text-2xl font-bold text-gray-900">Tentang Program</h2>
                                 <p class="leading-relaxed text-justify text-gray-700" v-html="campaign.description"></p>
@@ -100,7 +97,7 @@ console.log('Timeline Events:', props.timelineEvents);
                                 </button>
                             </div>
 
-                            <!-- Report/Timeline Program -->
+
                             <div class="p-6 rounded-lg shadow-inner bg-gray-50">
                                 <h2 class="mb-4 text-2xl font-bold text-gray-900">Report/Timeline Program</h2>
                                 <div class="space-y-4">
@@ -122,19 +119,19 @@ console.log('Timeline Events:', props.timelineEvents);
 
                     <hr class="my-12 border-gray-200">
 
-                    <!-- Riwayat Donasi -->
+
                     <div class="mb-8">
                         <h2 class="mb-6 text-2xl font-bold text-gray-900">Riwayat Donasi</h2>
-                        <!-- Menggunakan totalDonationCount dari prop -->
+
                         <p class="mb-6 text-lg text-gray-700">{{ totalDonationCount }} Donasi Terkumpul</p>
 
                         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-                            <!-- Menggunakan donationHistory dari prop -->
+
                             <div v-for="donation in donationHistory" :key="donation.id"
                                 class="flex flex-col items-center p-4 text-center border border-gray-200 rounded-lg shadow-sm">
                                 <img :src="donation.imageUrl" :alt="donation.donor" class="object-cover w-16 h-16 mb-2 rounded-full">
                                 <p class="font-semibold text-gray-800">{{ donation.donor }}</p>
-                                <p class="text-sm text-gray-600">Rp. {{ formatCurrency(donation.amount) }}</p>
+                                <p class="text-sm text-gray-600">{{ formatCurrency(donation.amount) }}</p>
                                 <p class="text-xs text-gray-500" v-html="donation.message"></p>
                             </div>
                         </div>
@@ -149,7 +146,7 @@ console.log('Timeline Events:', props.timelineEvents);
 </template>
 
 <style scoped>
-/* Styling untuk line-clamp pada deskripsi */
+ 
 .line-clamp-6 {
     display: -webkit-box;
     -webkit-line-clamp: 6;

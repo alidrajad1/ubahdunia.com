@@ -6,26 +6,26 @@ use App\Filament\Resources\CampaignResource\Pages;
 use App\Filament\Resources\CampaignResource\RelationManagers;
 use App\Models\Campaign;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload; // Pastikan ini sudah diimpor
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str; // Import Str facade for slug generation
+use Illuminate\Support\Str;
 
 class CampaignResource extends Resource
 {
     protected static ?string $model = Campaign::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-megaphone'; // Mengganti ikon menjadi megaphone
+    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static ?string $navigationGroup = 'Content Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Content Management';
 
-    protected static ?string $modelLabel = 'Campaign'; // Label untuk model
+    protected static ?string $modelLabel = 'Campaign';
 
-    protected static ?string $pluralModelLabel = 'Campaigns'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Campaigns';
 
     public static function form(Form $form): Form
     {
@@ -35,31 +35,31 @@ class CampaignResource extends Resource
                     ->label('Campaign Title')
                     ->required()
                     ->maxLength(255)
-                    ->live(onBlur: true) // Memperbarui slug secara real-time saat judul diisi
+                    ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(ignoreRecord: true), // Pastikan slug unik, kecuali saat mengedit record yang sama
+                    ->unique(ignoreRecord: true),
 
-                Forms\Components\FileUpload::make('image_url') // Menambahkan field untuk gambar
+                Forms\Components\FileUpload::make('image_url')
                     ->label('Campaign Image')
-                    ->image() // Memastikan hanya file gambar yang diunggah
-                    ->directory('campaign-images') // Direktori penyimpanan gambar di storage/app/public/campaign-images
-                    ->visibility('public') // Mengatur visibilitas file agar bisa diakses publik
-                    ->nullable(), // Sesuai dengan migrasi, kolom ini bisa null
+                    ->image()
+                    ->directory('campaign-images')
+                    ->visibility('public')
+                    ->nullable(),
 
                 Forms\Components\RichEditor::make('description')
                     ->label('Description')
                     ->required()
-                    ->columnSpanFull(), // Mengambil lebar penuh di form
+                    ->columnSpanFull(),
 
                 Forms\Components\TextInput::make('target_amount')
                     ->label('Target Amount')
                     ->numeric()
-                    ->prefix('Rp') // Menambahkan prefix mata uang
+                    ->prefix('Rp')
                     ->required()
                     ->minValue(0)
                     ->step(0.01),
@@ -67,11 +67,11 @@ class CampaignResource extends Resource
                 Forms\Components\TextInput::make('collected_amount')
                     ->label('Collected Amount')
                     ->numeric()
-                    ->prefix('Rp') // Menambahkan prefix mata uang
-                    ->default(0.00) // Default ke 0.00
+                    ->prefix('Rp')
+                    ->default(0.00)
                     ->minValue(0)
                     ->step(0.01)
-                    ->readOnly(), // Biasanya dihitung otomatis, tidak diedit manual
+                    ->readOnly(),
 
                 Forms\Components\DatePicker::make('start_date')
                     ->label('Start Date')
@@ -80,7 +80,7 @@ class CampaignResource extends Resource
                 Forms\Components\DatePicker::make('end_date')
                     ->label('End Date')
                     ->required()
-                    ->afterOrEqual('start_date'), // Tanggal berakhir harus setelah atau sama dengan tanggal mulai
+                    ->afterOrEqual('start_date'),
 
                 Forms\Components\Select::make('status')
                     ->label('Status')
@@ -90,7 +90,7 @@ class CampaignResource extends Resource
                         'draft' => 'Draft',
                     ])
                     ->required()
-                    ->default('draft'), // Default status saat membuat kampanye baru
+                    ->default('draft'),
             ]);
     }
 
@@ -103,10 +103,10 @@ class CampaignResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\ImageColumn::make('image_url') // Menambahkan kolom gambar di tabel
+                Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
-                    ->square() // Menampilkan gambar dalam bentuk persegi
-                    ->toggleable(), // Memungkinkan pengguna untuk menyembunyikan/menampilkan kolom ini
+                    ->square()
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Title')
@@ -204,8 +204,7 @@ class CampaignResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\DonationsRelationManager::class, // Untuk melihat donasi terkait kampanye
-            // RelationManagers\CommentsRelationManager::class, // Untuk melihat komentar terkait kampanye
+            
         ];
     }
 

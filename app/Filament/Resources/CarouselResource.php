@@ -19,13 +19,13 @@ class CarouselResource extends Resource
 {
     protected static ?string $model = Carousel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photo'; // Mengganti ikon menjadi photo
+    protected static ?string $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'Content Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Content Management';
 
-    protected static ?string $modelLabel = 'Carousel Item'; // Label untuk model
+    protected static ?string $modelLabel = 'Carousel Item';
 
-    protected static ?string $pluralModelLabel = 'Carousel Items'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Carousel Items';
 
     public static function form(Form $form): Form
     {
@@ -33,32 +33,32 @@ class CarouselResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image_url')
                     ->label('Image')
-                    ->image() // Memastikan hanya file gambar yang diunggah
-                    ->directory('carousel-images') // Direktori penyimpanan gambar
-                    ->visibility('public') // Mengatur visibilitas file
+                    ->image()
+                    ->directory('carousel-images')
+                    ->visibility('public')
                     ->required(),
 
                 Forms\Components\TextInput::make('caption')
                     ->label('Caption')
                     ->maxLength(255)
-                    ->nullable(), // Caption bisa null sesuai skema (jika tidak ada default)
+                    ->nullable(),
 
                 Forms\Components\TextInput::make('link_url')
                     ->label('Link URL')
-                    ->url() // Memastikan input adalah URL yang valid
+                    ->url()
                     ->maxLength(255)
-                    ->nullable(), // Link URL bisa null sesuai skema (jika tidak ada default)
+                    ->nullable(),
 
                 Forms\Components\TextInput::make('display_order')
                     ->label('Display Order')
                     ->numeric()
-                    ->default(0) // Default ke 0
+                    ->default(0)
                     ->minValue(0)
                     ->required(),
 
                 Forms\Components\Toggle::make('is_active')
                     ->label('Is Active')
-                    ->default(true) // Default ke true
+                    ->default(true)
                     ->required(),
             ]);
     }
@@ -74,28 +74,28 @@ class CarouselResource extends Resource
 
                 Tables\Columns\ImageColumn::make('image_url')
                     ->label('Image')
-                    ->square(), // Menampilkan gambar dalam bentuk persegi
+                    ->square(),
 
                 Tables\Columns\TextColumn::make('caption')
                     ->label('Caption')
-                    ->limit(50) // Batasi panjang teks
+                    ->limit(50)
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('link_url')
                     ->label('Link URL')
-                    // Mengganti ->url() dan ->openUrlInNewTab() dengan formatStateUsing
+
                     ->formatStateUsing(function (?string $state): HtmlString {
                         if (empty($state)) {
-                            return new HtmlString('N/A'); // Tampilkan 'N/A' jika URL kosong
+                            return new HtmlString('N/A');
                         }
-                        // Validasi dasar URL dan buat tautan HTML
+
                         if (filter_var($state, FILTER_VALIDATE_URL)) {
                             return new HtmlString('<a href="' . htmlspecialchars($state) . '" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline">' . htmlspecialchars(Str::limit($state, 50)) . '</a>');
                         }
-                        // Jika bukan URL valid, tampilkan teks biasa (dibatasi)
+
                         return new HtmlString(htmlspecialchars(Str::limit($state, 50)));
                     })
-                    ->html() // Penting: memberitahu Filament untuk merender string sebagai HTML
+                    ->html()
                     ->sortable()
                     ->searchable(),
 
@@ -105,7 +105,7 @@ class CarouselResource extends Resource
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
-                    ->boolean() // Menampilkan ikon centang/silang
+                    ->boolean()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -143,7 +143,7 @@ class CarouselResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+             
         ];
     }
 

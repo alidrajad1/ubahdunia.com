@@ -12,19 +12,19 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str; // Import Str facade for slug generation
+use Illuminate\Support\Str;
 
 class RewardResource extends Resource
 {
     protected static ?string $model = Reward::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-gift'; // Mengganti ikon menjadi gift
+    protected static ?string $navigationIcon = 'heroicon-o-gift';
 
-    protected static ?string $navigationGroup = 'Content Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Content Management';
 
-    protected static ?string $modelLabel = 'Reward'; // Label untuk model
+    protected static ?string $modelLabel = 'Reward';
 
-    protected static ?string $pluralModelLabel = 'Rewards'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Rewards';
 
     public static function form(Form $form): Form
     {
@@ -34,25 +34,25 @@ class RewardResource extends Resource
                     ->label('Reward Name')
                     ->required()
                     ->maxLength(255)
-                    ->live(onBlur: true) // Memperbarui slug secara real-time saat nama diisi
+                    ->live(onBlur: true)
                     ->afterStateUpdated(fn (string $operation, $state, Forms\Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                 Forms\Components\TextInput::make('slug')
                     ->label('Slug')
                     ->required()
                     ->maxLength(255)
-                    ->unique(ignoreRecord: true), // Pastikan slug unik, kecuali saat mengedit record yang sama
+                    ->unique(ignoreRecord: true),
 
                 Forms\Components\TextInput::make('point_required')
                     ->label('Points Required')
                     ->numeric()
                     ->required()
-                    ->minValue(0), // Poin tidak boleh negatif
+                    ->minValue(0),
 
                 Forms\Components\RichEditor::make('description')
                     ->label('Description')
                     ->required()
-                    ->columnSpanFull(), // Mengambil lebar penuh di form
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -113,7 +113,7 @@ class RewardResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // RelationManagers\RewardRedemptionsRelationManager::class, // Dibiarkan dikomentari sesuai permintaan Anda
+            
         ];
     }
 

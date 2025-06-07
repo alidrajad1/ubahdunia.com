@@ -5,10 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CommentResource\Pages;
 use App\Filament\Resources\CommentResource\RelationManagers;
 use App\Models\Comment;
-use App\Models\User; // Import model User
-use App\Models\Campaign; // Import model Campaign (jika commentable_type bisa campaign)
-use App\Models\Request; // Import model Request (jika commentable_type bisa request)
-use App\Models\Donation; // Import model Donation (jika commentable_type bisa donation)
+use App\Models\User;
+use App\Models\Campaign;
+use App\Models\Request;
+use App\Models\Donation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,20 +16,20 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\HtmlString; // Untuk menampilkan HTML di kolom
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right'; // Mengganti ikon menjadi chat-bubble-left-right
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static ?string $navigationGroup = 'Content Management'; // Menambahkan grup navigasi
+    protected static ?string $navigationGroup = 'Content Management';
 
-    protected static ?string $modelLabel = 'Comment'; // Label untuk model
+    protected static ?string $modelLabel = 'Comment';
 
-    protected static ?string $pluralModelLabel = 'Comments'; // Label plural untuk model
+    protected static ?string $pluralModelLabel = 'Comments';
 
     public static function form(Form $form): Form
     {
@@ -37,18 +37,18 @@ class CommentResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label('Author')
-                    ->relationship('user', 'name') // Mengambil nama dari tabel users
+                    ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Comment')
-                    ->relationship('parent', 'content') // Mengambil konten komentar induk
-                    ->getOptionLabelFromRecordUsing(fn (Comment $record) => Str::limit(strip_tags($record->content), 50)) // Batasi panjang dan hapus tag HTML
+                    ->relationship('parent', 'content')
+                    ->getOptionLabelFromRecordUsing(fn (Comment $record) => Str::limit(strip_tags($record->content), 50))
                     ->searchable()
                     ->preload()
-                    ->nullable(), // parent_id bisa null
+                    ->nullable(),
 
                 Forms\Components\Select::make('commentable_type')
                     ->label('Commentable Type')
@@ -56,10 +56,10 @@ class CommentResource extends Resource
                         'App\\Models\\Campaign' => 'Campaign',
                         'App\\Models\\Request' => 'Request',
                         'App\\Models\\Donation' => 'Donation',
-                        // Tambahkan model lain yang bisa dikomentari di sini
+
                     ])
                     ->required()
-                    ->live(), // Membuat field ini reaktif untuk kondisi commentable_id
+                    ->live(),
 
                 Forms\Components\Select::make('commentable_id')
                     ->label('Commentable Item')
@@ -69,13 +69,13 @@ class CommentResource extends Resource
                         if (!$type) {
                             return [];
                         }
-                        // Sesuaikan dengan model yang sesuai
+
                         if ($type === 'App\\Models\\Campaign') {
                             return Campaign::pluck('title', 'id')->toArray();
                         } elseif ($type === 'App\\Models\\Request') {
                             return Request::pluck('title', 'id')->toArray();
                         } elseif ($type === 'App\\Models\\Donation') {
-                            // Untuk donasi, mungkin perlu menampilkan sesuatu yang unik, misal: user_id dan amount
+
                             return Donation::all()->mapWithKeys(function ($donation) {
                                 return [$donation->id => 'Donation by ' . ($donation->user ? $donation->user->name : 'Unknown User') . ' (Rp' . number_format($donation->amount, 0, ',', '.') . ')'];
                             })->toArray();
@@ -88,7 +88,7 @@ class CommentResource extends Resource
                 Forms\Components\RichEditor::make('content')
                     ->label('Comment Content')
                     ->required()
-                    ->columnSpanFull(), // Mengambil lebar penuh di form
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -106,14 +106,14 @@ class CommentResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('parent.id') // Menampilkan ID komentar induk
+                Tables\Columns\TextColumn::make('parent.id')
                     ->label('Parent ID')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('commentable_type')
                     ->label('Type')
-                    ->formatStateUsing(fn (string $state): string => str_replace('App\\Models\\', '', $state)) // Menampilkan hanya nama model
+                    ->formatStateUsing(fn (string $state): string => str_replace('App\\Models\\', '', $state))
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('commentable_id')
@@ -122,9 +122,9 @@ class CommentResource extends Resource
 
                 Tables\Columns\TextColumn::make('content')
                     ->label('Content')
-                    ->html() // Menampilkan konten sebagai HTML
-                    ->limit(100) // Batasi panjang teks
-                    ->tooltip(fn (Comment $record): ?string => new HtmlString($record->content)) // Tampilkan tooltip dengan konten lengkap
+                    ->html()
+                    ->limit(100)
+                    ->tooltip(fn (Comment $record): ?string => new HtmlString($record->content))
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -169,8 +169,7 @@ class CommentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Anda bisa menambahkan relasi untuk melihat balasan komentar di sini
-            // RelationManagers\RepliesRelationManager::class,
+            
         ];
     }
 
