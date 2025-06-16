@@ -16,6 +16,7 @@ import CampaignList from '@/Components/CampaignList.vue';
 import CategoryList from '@/Components/CategoryList.vue';
 import CommentSection from '@/Components/CommentSection.vue';
 import VolunteerSection from '@/Components/VolunteerSection.vue';
+import NewsList from '@/Components/NewsList.vue';
 
 
 // Terima prop 'carousels' yang dikirim dari controller
@@ -73,6 +74,8 @@ const swiperOptions = {
 
                     <hr class="my-4">
                     <CampaignList />
+                    <hr class="my-4">
+                    <NewsList />
                     <CategoryList />
                     <CommentSection />
                     <VolunteerSection />

@@ -10,8 +10,6 @@
     {
         public function index()
     {
-
-
         return Inertia::render('DonationList', [
         ]);
     }
@@ -31,7 +29,7 @@
 
             return response()->json($campaigns);
         } catch (\Exception $e) {
-             
+
             return response()->json(['message' => 'Terjadi kesalahan server.'], 500);
         }
     }

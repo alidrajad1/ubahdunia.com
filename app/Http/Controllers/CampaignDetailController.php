@@ -55,7 +55,7 @@ class CampaignDetailController extends Controller
                                         ];
                                     });
 
-        
+
         $totalDonationCount = $donationHistory->count();
 
 
